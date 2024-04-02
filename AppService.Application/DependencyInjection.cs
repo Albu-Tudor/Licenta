@@ -10,6 +10,7 @@ namespace AppService.Application
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             services.AddScoped<IDataSourceService, DataSourceService>();
+            services.AddScoped<IBlobService, BlobService>();
 
             return services;
         }

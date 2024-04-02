@@ -1,4 +1,5 @@
-﻿using AppService.Contracts.DatsaSources;
+﻿using AppService.Application.Interfaces;
+using AppService.Contracts.DatsaSources;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,9 +9,18 @@ namespace AppService.Api.Controllers
     [Route("[controller]")]
     public class DataSourcesController : ControllerBase
     {
-        [HttpPost]
-        public async Task<IActionResult> Create([FromForm] CreateDataSourceRequest request)
+        private readonly IBlobService _blobService;
+
+        public DataSourcesController(IBlobService blobService)
         {
+            _blobService = blobService;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromForm] IEnumerable<IFormFile> file)
+        {
+            await _blobService.CreateAsync(file.First());
+
             return Ok(1);
         }
     }
